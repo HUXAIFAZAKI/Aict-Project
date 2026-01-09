@@ -493,6 +493,8 @@ const NextGenApp = {
       loginBtn: document.querySelector('.icon-btn[aria-label="Login"]'),
       tabs: document.querySelectorAll(".auth-tab"),
       forms: document.querySelectorAll(".auth-form"),
+      signupFirstName: document.getElementById("signupFirstName"),
+      signupLastName: document.getElementById("signupLastName"),
       signupPass: document.getElementById("signupPassword"),
       confirmPass: document.getElementById("confirmPassword"),
     };
@@ -593,10 +595,27 @@ const NextGenApp = {
 
     document.getElementById("signupForm")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (nodes.signupPass.value !== nodes.confirmPass.value) {
-        alert("Passwords do not match!");
+
+      const firstName = nodes.signupFirstName?.value.trim() || "";
+      const lastName = nodes.signupLastName?.value.trim() || "";
+
+      if (firstName.length < 3) {
+        this.showNotification("First name must be at least 3 characters long!");
+        nodes.signupFirstName?.focus();
         return;
       }
+
+      if (lastName.length < 3) {
+        this.showNotification("Last name must be at least 3 characters long!");
+        nodes.signupLastName?.focus();
+        return;
+      }
+
+      if (nodes.signupPass.value !== nodes.confirmPass.value) {
+        this.showNotification("Passwords do not match!");
+        return;
+      }
+
       this.showNotification("Account created successfully!");
       setTimeout(() => switchTab("login"), 1500);
     });
